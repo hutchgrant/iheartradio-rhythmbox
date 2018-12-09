@@ -1,8 +1,9 @@
-## iheartradio scraper
+## iheartradio rhythmbox
 
 ### Prerequisites
 - Python 2.7
 - Beautiful Soup 4
+- Rhythmbox *optional*
 
 ### Install
 
@@ -17,17 +18,17 @@ pip install beautifulsoup4
 python iheartradio.py
 ```
 
-A radio.json file will be generated with every stream available for each station in canada
+A radio.json file will be generated with every stream available for each station in Canada
 
 ### Run Rhythmbox mode
-
-Add --rhythmbox flag to initiate a write to the default rhythmbox cache at ~/.local/share/rhythmbox/rhythmboxdb.xml
-
-Note: **Make sure you have exited rhythmbox** before running the script. Otherwise rhythmbox will overwrite the cahce. Reopen it once the script is complete.
 
 ```bash
 python iheartradio.py --rhythmbox
 ```
+
+Add --rhythmbox flag to write to default rhythmbox cache at ~/.local/share/rhythmbox/rhythmdb.xml
+
+Note: **Make sure you have exited rhythmbox** before running the script. Otherwise rhythmbox will overwrite the cache. Reopen it once the script is complete.
 
 Script will update existing stations and/or add new stations if you run it again in the future.
 
