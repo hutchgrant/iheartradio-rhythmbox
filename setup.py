@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='iheartradio',
-      version='1.0.3',
+      version='1.0.4',
       description='iheartradio radio station fetcher for rhythmbox',
       long_description=long_description,
       long_description_content_type="text/markdown",

@@ -72,8 +72,9 @@ def main(args):
         for arg in args:
             if arg == "--rhythmbox":
                 writeXML = True
-            elif arg == "--country" and args[i+1] is not None:
-                countryCode = args[i+1]
+            elif arg == "--country" and args[i] is not None:
+                countryCode = args[i]
+            i+=1
     result = pyfiglet.figlet_format("iheartradio", font = "rounded" )
     print (result) 
     print('Fetching radio stations... This could take several minutes depending on your connection and selected country code')
