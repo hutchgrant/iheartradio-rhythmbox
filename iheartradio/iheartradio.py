@@ -43,14 +43,14 @@ def fetch_station(url):
                 station['website'] = x['live']['stations'][key]['website']
             print  ('Added: '+station['name'])
         if writeXML is True:
-            rhythmbox.iterate_xml(station)
+            iterate_xml(station)
 
     return station
 
 def iterate_stations(urls):
     stations = []
     if writeXML is True:
-        rhythmbox.openDB()
+        openDB()
     for url in urls:
         stations.append(fetch_station('https://www.iheart.com'+url['href']))
     return stations
@@ -59,7 +59,7 @@ def write_stations(stations):
     f = open("radio.json", "w")
     f.write(json.dumps(stations, indent=2, sort_keys=True))
     if writeXML is True:
-        rhythmbox.writeDB()
+        writeDB()
 
 def main(args):
     global writeXML
