@@ -1,21 +1,31 @@
-from bs4 import BeautifulSoup
-import requests
+#!/usr/bin/env python
 import json
 import sys
-import rhythmbox
 
-writeXML = False
+import pyfiglet
+import requests
+from bs4 import BeautifulSoup
+
+from .rhythmbox import openDB, writeDB, iterate_xml 
+
+writeXML = False 
+countryCode = "CA"
 
 if len(sys.argv) > 1:
-    writeXML = sys.argv[1] == "--rhythmbox"
+    i = 1
+    for arg in sys.argv:
+        if arg == "--rhythmbox":
+            writeXML = True
+        elif arg == "--country" and sys.argv[i+1] is not None:
+            countryCode = sys.argv[i+1]
 
 def fetch_all_stations():
     # fetch all stations page
-    page_link = 'https://www.iheart.com/live/country/CA/'
-    page_response = requests.get(page_link, timeout=5)
+    page_link = 'https://www.iheart.com/live/country/'+countryCode+'/'
+    page_response = requests.get(page_link, timeout=15)
 
     # parse all stations page
-    page_content = BeautifulSoup(page_response.content, "html.parser")
+    page_content = BeautifulSoup(page_response.content, "lxml")
 
     # fetch all station urls
     return page_content.findAll('a',attrs={"class":"thumbLink"})
@@ -26,7 +36,7 @@ def fetch_station(url):
     page_response = requests.get(url, timeout=15)
 
     # parse station page
-    page_content = BeautifulSoup(page_response.content, "html.parser")
+    page_content = BeautifulSoup(page_response.content, "lxml")
     script = page_content.find(id="initialState")
     if script is not None:
         x = json.loads(script.text)
@@ -42,7 +52,7 @@ def fetch_station(url):
             station['streams'] = x['live']['stations'][key]['streams']
             if x['live']['stations'][key].get('website') is not None:
                 station['website'] = x['live']['stations'][key]['website']
-            print  'Added: '+station['name']
+            print  ('Added: '+station['name'])
         if writeXML is True:
             rhythmbox.iterate_xml(station)
 
@@ -50,6 +60,8 @@ def fetch_station(url):
 
 def iterate_stations(urls):
     stations = []
+    if writeXML is True:
+        rhythmbox.openDB()
     for url in urls:
         stations.append(fetch_station('https://www.iheart.com'+url['href']))
     return stations
@@ -60,11 +72,13 @@ def write_stations(stations):
     if writeXML is True:
         rhythmbox.writeDB()
 
-urls = fetch_all_stations()
-if writeXML is True:
-    rhythmbox.openDB()
-stations = iterate_stations(urls)
-write_stations(stations)
-print 'Success! radio.json generated'
-if writeXML is True:
-    print 'Rhythmbox updated!'
+def main():
+    result = pyfiglet.figlet_format("iheartradio", font = "rounded" )
+    print (result) 
+    print('Fetching radio stations... This could take several minutes depending on your connection and selected country code')
+    urls = fetch_all_stations()
+    stations = iterate_stations(urls)
+    write_stations(stations)
+    print ('Success! radio.json generated')
+    if writeXML is True:
+        print ('Rhythmbox updated!')

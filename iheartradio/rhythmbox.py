@@ -1,7 +1,8 @@
-from bs4 import BeautifulSoup
-import requests
 import json
 import os
+
+import requests
+from bs4 import BeautifulSoup
 
 user = os.environ.get('USER')
 file = '/home/'+user+'/.local/share/rhythmbox/rhythmdb.xml'
@@ -71,7 +72,4 @@ def openDB():
 def writeDB():
     f = open(file, "w")
     f.write(str(soup))
-    print soup
     f.close()
-
-
