@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='iheartradio',
-      version='1.0.1',
+      version='1.0.2',
       description='iheartradio radio station fetcher for rhythmbox',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -18,6 +18,7 @@ setup(name='iheartradio',
         'Topic :: Multimedia :: Sound/Audio',
       ],
       license='MIT',
+      url='https://github.com/hutchgrant/iheartradio-rhythmbox',
       packages=['iheartradio'],
       scripts=['bin/iheartradio'],
       install_requires=[

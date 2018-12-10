@@ -2,7 +2,6 @@
 
 ### Prerequisites
 - Python 3
-- Beautiful Soup 4
 - Rhythmbox *optional*
 
 ### Install

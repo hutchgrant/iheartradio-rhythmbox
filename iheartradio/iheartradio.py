@@ -8,17 +8,6 @@ from bs4 import BeautifulSoup
 
 from .rhythmbox import openDB, writeDB, iterate_xml 
 
-writeXML = False 
-countryCode = "CA"
-
-if len(sys.argv) > 1:
-    i = 1
-    for arg in sys.argv:
-        if arg == "--rhythmbox":
-            writeXML = True
-        elif arg == "--country" and sys.argv[i+1] is not None:
-            countryCode = sys.argv[i+1]
-
 def fetch_all_stations():
     # fetch all stations page
     page_link = 'https://www.iheart.com/live/country/'+countryCode+'/'
@@ -72,7 +61,19 @@ def write_stations(stations):
     if writeXML is True:
         rhythmbox.writeDB()
 
-def main():
+def main(args):
+    global writeXML
+    global countryCode
+    writeXML = False 
+    countryCode = "CA"
+
+    if len(args) > 1:
+        i = 1
+        for arg in args:
+            if arg == "--rhythmbox":
+                writeXML = True
+            elif arg == "--country" and args[i+1] is not None:
+                countryCode = args[i+1]
     result = pyfiglet.figlet_format("iheartradio", font = "rounded" )
     print (result) 
     print('Fetching radio stations... This could take several minutes depending on your connection and selected country code')
